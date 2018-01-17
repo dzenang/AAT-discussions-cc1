@@ -35,23 +35,22 @@ public class Activity2 extends AppCompatActivity {
         // Before go back, write data to realm, and pass id of written data
         Button button3 = (Button) findViewById(R.id.button3);
 
-        Realm realm = Realm.getDefaultInstance();
-        try {
-            realm.beginTransaction();
-            Navigation nav = realm.createObject(Navigation.class, NAV_OBJECT_KEY);
-            nav.setResult(Activity2.ACTIVITY2_RESULT_DATA);
-            realm.commitTransaction();
-        } finally {
-            realm.close();
-        }
-
-        Intent returnIntent = new Intent();
-        returnIntent.putExtra(ACTIVITY2_RESULT_KEY, NAV_OBJECT_KEY);
-        setResult(Activity.RESULT_OK, returnIntent);
-
         button3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Realm realm = Realm.getDefaultInstance();
+                try {
+                    realm.beginTransaction();
+                    Navigation nav = realm.createObject(Navigation.class, NAV_OBJECT_KEY);
+                    nav.setResult(Activity2.ACTIVITY2_RESULT_DATA);
+                    realm.commitTransaction();
+                } finally {
+                    realm.close();
+                }
+
+                Intent returnIntent = new Intent();
+                returnIntent.putExtra(ACTIVITY2_RESULT_KEY, NAV_OBJECT_KEY);
+                setResult(Activity.RESULT_OK, returnIntent);
                 finish();
             }
         });

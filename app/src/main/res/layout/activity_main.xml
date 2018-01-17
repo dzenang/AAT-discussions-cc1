@@ -21,7 +21,7 @@
     android:layout_height="50dp"
     android:text="B2"
     android:layout_gravity="center"
-    android:layout_marginTop="20dp"/>
+    android:layout_marginTop="50dp"/>
 
     <Button
         android:id="@+id/post"
@@ -29,7 +29,7 @@
         android:layout_height="50dp"
         android:text="Post"
         android:layout_gravity="center"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="50dp"/>
 
 
 </LinearLayout>

@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private AlertDialog.Builder mBuilder;
     private static final int ACTIVITY2_REQ_CODE = 1;
     private static int mActivity2Result;
+    private Navigation mNav = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
         postBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                service.savePost(example).enqueue(new Callback<Void>() {
+                service.postExample(example).enqueue(new Callback<Void>() {
                     @Override
                     public void onResponse(Call<Void> call, Response<Void> response) {
                         if(response.isSuccessful()) {
@@ -115,19 +116,23 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
 
         // Check in Realm if we got here from Activity2
-        Realm realm = Realm.getDefaultInstance();
         String result = "";
-        try {
-            realm.beginTransaction();
-            Navigation nav = realm.where(Navigation.class).equalTo("id", mActivity2Result).findFirst();
-            if (nav != null) {
-                result = nav.getResult();
+        if(mActivity2Result == Activity2.NAV_OBJECT_KEY) {
+            Realm realm = Realm.getDefaultInstance();
+            try {
+                realm.beginTransaction();
+                mNav = realm.where(Navigation.class).equalTo("id", mActivity2Result).findFirst();
+                if (mNav != null) {
+                    result = mNav.getResult();
+                    mNav.deleteFromRealm();
+                    mNav = null;
+                }
+                realm.commitTransaction();
+            } finally {
+                realm.close();
             }
-            realm.commitTransaction();
-        } finally {
-            realm.close();
+            mActivity2Result = 0;
         }
-
         if (!result.isEmpty()) {
             mBuilder.setMessage("B1");
             AlertDialog dialog = mBuilder.create();

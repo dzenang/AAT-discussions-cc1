@@ -11,6 +11,6 @@ import retrofit2.http.POST;
 public interface APIService {
 
         @POST("/sest")
-        Call<Void> savePost(@Body Example e);
+        Call<Void> postExample(@Body Example e);
 
 }
